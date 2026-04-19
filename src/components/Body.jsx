@@ -4,6 +4,8 @@ import Shimmer from "./Shimmer";
 
 const Body = () => {
   const [listofR, setListofR] = useState([]);
+  const [searchText, setSearchText] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
     fetchData();
@@ -15,24 +17,39 @@ const Body = () => {
     );
     const jsonData = await data.json();
     const res =
-      jsonData.data.cards[2].card.card.gridElements.infoWithStyle.restaurants;
+      jsonData.data.cards[4].card.card.gridElements.infoWithStyle.restaurants;
     setListofR(res);
+    setFilteredData(res);
     console.log(res);
   };
 
-  if(listofR.length==0){
-    return(<Shimmer/>
-    )
-  }
-
-  return (
+  return listofR.length == 0 ? (
+    <Shimmer />
+  ) : (
     <div className="body">
       <div className="filter">
+        <input
+          type="text"
+          placeholder="Search restaurants..."
+          className="search-box"
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+        />
+
         <button
+          className="search-btn"
           onClick={() => {
-            const topRated = listofR.filter((x) => x.info.avgRating > 4.5);
-            setListofR(topRated);
+            console.log("hii");
+            const filteredR = listofR.filter((f) =>
+              f.info.name.toLowerCase().includes(searchText.toLowerCase()),
+            );
+            setFilteredData(filteredR);
           }}
+        >
+          Search
+        </button>
+
+        <button
           onMouseOver={() => console.log("Mouse Hover")}
           className="filter-btn"
         >
@@ -40,7 +57,7 @@ const Body = () => {
         </button>
       </div>
       <div className="res-container">
-        {listofR.map((res) => {
+        {filteredData.map((res) => {
           return <ResCard {...res.info} key={res.info.id} />;
         })}
       </div>
