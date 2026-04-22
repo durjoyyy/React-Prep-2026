@@ -1,6 +1,7 @@
 import ResCard from "./ResCard";
 import { useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
+import { createBrowserRouter } from "react-router-dom";
 
 const Body = () => {
   const [listofR, setListofR] = useState([]);
