@@ -1,6 +1,9 @@
 import ResCard from "./ResCard";
 import { useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
+import { Link } from "react-router-dom";
+import useOnlineStatus from "../../utils/useOnlineStatus";
+
 
 const Body = () => {
   const [listofR, setListofR] = useState([]);
@@ -12,16 +15,38 @@ const Body = () => {
   }, []);
 
   const fetchData = async () => {
-    const data = await fetch(
-      "https://corsproxy.io/https://www.swiggy.com/dapi/restaurants/list/v5?lat=26.70840&lng=88.43180&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING",
-    );
-    const jsonData = await data.json();
-    const res =
-      jsonData.data.cards[2].card.card.gridElements.infoWithStyle.restaurants;
-    setListofR(res);
-    setFilteredData(res);
-    console.log(res);
+    try {
+      const data = await fetch(
+        "https://corsproxy.io/https://www.swiggy.com/dapi/restaurants/list/v5?lat=26.70840&lng=88.43180&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING",
+      );
+
+      const jsonData = await data.json();
+
+      console.log(jsonData);
+
+      const restaurantCard = jsonData?.data?.cards?.find(
+        (card) => card?.card?.card?.gridElements?.infoWithStyle?.restaurants,
+      );
+
+      const res =
+        restaurantCard?.card?.card?.gridElements?.infoWithStyle?.restaurants ||
+        [];
+
+      setListofR(res);
+      setFilteredData(res);
+
+      console.log(res);
+    } catch (error) {
+      console.error("Fetch Error:", error);
+    }
   };
+
+  const isOnline=useOnlineStatus();
+
+  if(!isOnline)
+    return <h1>You are offline! </h1>
+
+  
 
   return listofR.length == 0 ? (
     <Shimmer />
@@ -57,9 +82,15 @@ const Body = () => {
         </button>
       </div>
       <div className="res-container">
-        {filteredData.map((res) => {
-          return <ResCard {...res.info} key={res.info.id} />;
-        })}
+        {filteredData.map((res) => (
+          <Link
+            key={res.info.id}
+            to={`/restaurants/${res.info.id}`}
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <ResCard {...res.info} />
+          </Link>
+        ))}
       </div>
     </div>
   );

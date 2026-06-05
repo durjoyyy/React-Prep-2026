@@ -6,15 +6,20 @@ import { RouterProvider } from "react-router-dom";
 import Contact from "./components/ContactUs";
 import ErrorPage from "./components/Error";
 import Body from "./components/Body";
+import ResMenu from "./components/ResMenu";
+import { lazy, Suspense } from "react";
+
+const Grocery = lazy(() => import("./components/Grocery"));
+
 const appRouter = createBrowserRouter([
   {
     path: "/",
     element: <AppLayout />,
     errorElement: <ErrorPage />,
-    children:[
+    children: [
       {
-        index:true,
-        element:<Body/>,
+        index: true,
+        element: <Body />,
       },
       {
         path: "/about",
@@ -22,11 +27,22 @@ const appRouter = createBrowserRouter([
       },
       {
         path: "/contact",
-        element: <Contact />
-      }
-    ]
+        element: <Contact />,
+      },
+      {
+        path: "/grocery",
+        element: (
+          <Suspense fallback={<h1>Loading Grocery...</h1>}>
+            <Grocery />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/restaurants/:resId",
+        element: <ResMenu />,
+      },
+    ],
   },
-
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
