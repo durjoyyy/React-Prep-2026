@@ -25,7 +25,6 @@ const useRestaurantMenu = (resId) => {
         [];
 
       const restaurant = restaurants.find((r) => r?.info?.id === resId);
-
       setResInfo(restaurant?.info);
     } catch (error) {
       console.error("Error fetching menu:", error);

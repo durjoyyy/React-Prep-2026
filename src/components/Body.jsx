@@ -3,12 +3,14 @@ import { useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../../utils/useOnlineStatus";
-
+import { withPromotedLabel } from "./ResCard";
 
 const Body = () => {
   const [listofR, setListofR] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [filteredData, setFilteredData] = useState([]);
+
+  const ResCarPromoted = withPromotedLabel(ResCard);
 
   useEffect(() => {
     fetchData();
@@ -41,12 +43,9 @@ const Body = () => {
     }
   };
 
-  const isOnline=useOnlineStatus();
+  const isOnline = useOnlineStatus();
 
-  if(!isOnline)
-    return <h1>You are offline! </h1>
-
-  
+  if (!isOnline) return <h1>You are offline! </h1>;
 
   return listofR.length == 0 ? (
     <Shimmer />
@@ -77,20 +76,38 @@ const Body = () => {
         <button
           onMouseOver={() => console.log("Mouse Hover")}
           className="filter-btn"
+          onClick={() => {
+            const topRated = listofR.filter((x) => x.info.avgRating > 4.5);
+            setFilteredData(topRated);
+          }}
         >
           Top-Rated Restaurant
         </button>
+
+        <button
+          className="search-btn"
+          onClick={() => {
+            setFilteredData(listofR);
+            setSearchText("");
+          }}
+        >
+          Reset
+        </button>
       </div>
       <div className="res-container">
-        {filteredData.map((res) => (
+        {filteredData.map((res) => {
+          console.log(res.info);
+          return(
           <Link
             key={res.info.id}
             to={`/restaurants/${res.info.id}`}
             style={{ textDecoration: "none", color: "inherit" }}
           >
-            <ResCard {...res.info} />
+            {/**IF Res is promoted, add a promoted card to it*/}
+            {res.info.avgRating>4.35 ? <ResCarPromoted  {...res.info} /> : <ResCard {...res.info} />}
           </Link>
-        ))}
+        );
+      })}
       </div>
     </div>
   );

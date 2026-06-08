@@ -17,3 +17,20 @@ export default function ResCard({ name, costForTwo, avgRating, sla,cloudinaryIma
     </div>
   );
 }
+
+
+
+//Higher-Order-Component
+//input-> ResCard, output-> ResCard Promoted
+
+export const withPromotedLabel=(ResCard)=>{
+  return (props)=>{
+    return(
+      <div>
+        <label className="absolute bg-amber-200 text-black m-5 rounded-lg p-5">Top Rated</label>
+        <ResCard {...props}/>
+      </div>
+    )
+
+  }
+}
