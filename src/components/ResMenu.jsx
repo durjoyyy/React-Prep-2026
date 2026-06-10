@@ -1,78 +1,92 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import Shimmer from "./Shimmer";
 import { useParams } from "react-router-dom";
 import useRestaurantMenu from "../../utils/useResMenu";
+import ResCategory from "./ResCategory";
 
 const ResMenu = () => {
   const { resId } = useParams();
 
-  // const [resInfo, setResInfo] = useState(null);
+  const [showIndex, setShowIndex] = useState(null);
 
-  const resInfo=useRestaurantMenu(resId);
-
-  // useEffect(() => {
-  //   fetchMenu();
-  // }, []);
-
-  // const fetchMenu = async () => {
-  //   try {
-  //     const data = await fetch(
-  //       "https://corsproxy.io/https://www.swiggy.com/dapi/restaurants/list/v5?lat=26.70840&lng=88.43180&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING",
-  //     );
-
-  //     const jsonData = await data.json();
-
-  //     const restaurantCard = jsonData?.data?.cards?.find(
-  //       (card) => card?.card?.card?.gridElements?.infoWithStyle?.restaurants,
-  //     );
-
-  //     const restaurants =
-  //       restaurantCard?.card?.card?.gridElements?.infoWithStyle?.restaurants ||
-  //       [];
-
-  //     const restaurant = restaurants.find((r) => r?.info?.id === resId);
-
-  //     setResInfo(restaurant?.info);
-  //   } catch (error) {
-  //     console.error("Error fetching menu:", error);
-  //   }
-  // };
+  const resInfo = useRestaurantMenu(resId);
 
   if (!resInfo) {
+    console.info(resInfo);
     return <Shimmer />;
   }
 
-  const { name, cuisines, costForTwo, cloudinaryImageId } = resInfo;
-  const IMG_URL = "https://media-assets.swiggy.com/swiggy/image/upload/";
+  const restaurantInfo =
+    resInfo?.cards?.[2]?.card?.card?.info;
+
+  if (!restaurantInfo) {
+    return <Shimmer />;
+  }
+
+  const {
+    name,
+    cuisines,
+    costForTwoMessage,
+    cloudinaryImageId,
+  } = restaurantInfo;
+
+  const regularCards =
+    resInfo?.cards?.[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards || [];
+
+  // Build a flat, normalized list of accordion categories from the menu data.
+  // Two shapes exist:
+  //   - ItemCategory:       { title, itemCards: [...] }
+  //   - NestedItemCategory: { title, categories: [{ title, itemCards }, ...] }
+  const categories = regularCards.flatMap((card) => {
+    const c = card?.card?.card;
+    if (!c?.title) return [];
+
+    if (c.itemCards?.length) {
+      return [{ title: c.title, itemCards: c.itemCards }];
+    }
+
+    if (c.categories?.length) {
+      return c.categories
+        .filter((sub) => sub?.itemCards?.length)
+        .map((sub) => ({
+          title: `${c.title} - ${sub.title}`,
+          itemCards: sub.itemCards,
+        }));
+    }
+
+    return [];
+  });
+
+  const IMG_URL =
+    "https://media-assets.swiggy.com/swiggy/image/upload/";
 
   return (
     <div className="menu">
-      <img className="menu-img" src={IMG_URL + cloudinaryImageId} alt={name} />
+      <img
+        className="menu-img"
+        src={IMG_URL + cloudinaryImageId}
+        alt={name}
+      />
+
       <h1>{name}</h1>
 
       <div className="menu-info">
         <p>{cuisines?.join(", ")}</p>
-        <p>{costForTwo}</p>
+        <p>{costForTwoMessage}</p>
       </div>
 
-      <h2>Recommended</h2>
-
-      <ul>
-        <li>
-          <span>Biryani</span>
-          <span className="menu-item-price">₹299</span>
-        </li>
-
-        <li>
-          <span>Burger</span>
-          <span className="menu-item-price">₹199</span>
-        </li>
-
-        <li>
-          <span>Diet Coke</span>
-          <span className="menu-item-price">₹60</span>
-        </li>
-      </ul>
+      {categories.map((category, index) => (
+        <ResCategory
+          key={category.title}
+          data={category}
+          showItems={index === showIndex}
+          setShowItems={() =>
+            setShowIndex(
+              index === showIndex ? null : index
+            )
+          }
+        />
+      ))}
     </div>
   );
 };

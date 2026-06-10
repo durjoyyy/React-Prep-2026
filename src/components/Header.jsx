@@ -1,9 +1,13 @@
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../../utils/useOnlineStatus";
 import Grocery from './Grocery';
+import UserContext from "../../utils/UserContext";
+import { useContext } from "react";
 
 const Header = () => {
   const isOnline=useOnlineStatus();
+  const userName=useContext(UserContext);
+
   return (
     <div className="header">
       <div className="logo-container">
@@ -21,6 +25,7 @@ const Header = () => {
           </li>
           <li><Link to="/contact">Contact Us</Link></li>
           <li><Link to="/grocery">Grocery</Link> </li>
+          <li className=" font-bold">{userName.loggedInUser}</li>
         </ul>
       </div>
     </div>
