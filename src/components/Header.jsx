@@ -25,6 +25,7 @@ const Header = () => {
           </li>
           <li><Link to="/contact">Contact Us</Link></li>
           <li><Link to="/grocery">Grocery</Link> </li>
+          <li><Link to="/cart">Cart</Link> </li>
           <li className=" font-bold">{userName.loggedInUser}</li>
         </ul>
       </div>
