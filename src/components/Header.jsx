@@ -3,10 +3,14 @@ import useOnlineStatus from "../../utils/useOnlineStatus";
 import Grocery from './Grocery';
 import UserContext from "../../utils/UserContext";
 import { useContext } from "react";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const isOnline=useOnlineStatus();
   const userName=useContext(UserContext);
+
+  const cartItems=useSelector((store)=>store.cart.items);
+  console.log(cartItems);
 
   return (
     <div className="header">
@@ -25,8 +29,8 @@ const Header = () => {
           </li>
           <li><Link to="/contact">Contact Us</Link></li>
           <li><Link to="/grocery">Grocery</Link> </li>
-          <li><Link to="/cart">Cart</Link> </li>
-          <li className=" font-bold">{userName.loggedInUser}</li>
+          <li ><Link to="/cart">Cart- {cartItems.length} </Link> </li>
+          <li >{userName.loggedInUser}</li>
         </ul>
       </div>
     </div>

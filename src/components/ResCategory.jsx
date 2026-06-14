@@ -1,8 +1,19 @@
+import { useDispatch } from "react-redux";
+import { addItem } from "../../utils/cartSlice";
+ 
 const ResCategory = ({
   data,
   showItems,
   setShowItems,
 }) => {
+
+
+  const dispatch=useDispatch();
+  const handleAddItem=(item)=>{
+    dispatch(addItem(item.card.info));
+  }
+
+  
   return (
     <div className="category">
       <div
@@ -30,6 +41,10 @@ const ResCategory = ({
                   {item.card.info.name}
                 </p>
               </div>
+              <button
+              onClick={()=>handleAddItem(item)}
+               className="border border-black p-2 bg-gray-500
+               text-white cursor-pointer shadow-lg mx-16">Add + </button>
 
               <div className="menu-item-price">
                 ₹
