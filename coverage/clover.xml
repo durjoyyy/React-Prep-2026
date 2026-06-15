@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1781556889596" clover="3.2.0">
+  <project timestamp="1781556889596" name="All files">
+    <metrics statements="13" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="2" elements="17" coveredelements="10" complexity="0" loc="13" ncloc="13" packages="1" files="2" classes="2"/>
+    <file name="ContactUs.jsx" path="C:\Users\durjo\OneDrive\Desktop\React-2026\React-Prep-2026\src\components\ContactUs.jsx">
+      <metrics statements="11" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="1"/>
+      <line num="3" count="1" type="stmt"/>
+      <line num="4" count="2" type="stmt"/>
+      <line num="10" count="2" type="stmt"/>
+      <line num="11" count="0" type="stmt"/>
+      <line num="14" count="2" type="stmt"/>
+      <line num="15" count="0" type="stmt"/>
+      <line num="16" count="0" type="stmt"/>
+      <line num="17" count="0" type="stmt"/>
+      <line num="18" count="0" type="stmt"/>
+      <line num="21" count="2" type="stmt"/>
+      <line num="67" count="1" type="stmt"/>
+    </file>
+    <file name="sum.js" path="C:\Users\durjo\OneDrive\Desktop\React-2026\React-Prep-2026\src\components\sum.js">
+      <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <line num="1" count="1" type="stmt"/>
+      <line num="2" count="1" type="stmt"/>
+    </file>
+  </project>
+</coverage>
