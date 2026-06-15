@@ -15,7 +15,7 @@ test("should load contact us page",()=>{
 })
 
 
-test("should load input name inside contact componrnt",()=>{
+it("should load input name inside contact componrnt",()=>{
     render(<Contact/>);
     const inputName=screen.getByPlaceholderText("Your Message");
     expect(inputName).toBeInTheDocument();
