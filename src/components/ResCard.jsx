@@ -10,7 +10,7 @@ export default function ResCard({ name, costForTwo, avgRating, sla,cloudinaryIma
       : `https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/${cloudinaryImageId}`;
 
   return (
-    <div className="res-card" style={styleCard}>
+    <div data-testid='resCard' className="res-card" style={styleCard}>
       <img
         className="res-img"
         src={imgSrc}
@@ -27,9 +27,6 @@ export default function ResCard({ name, costForTwo, avgRating, sla,cloudinaryIma
     </div>
   );
 }
-
-
-
 //Higher-Order-Component
 //input-> ResCard, output-> ResCard Promoted
 

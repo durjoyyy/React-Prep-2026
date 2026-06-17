@@ -1,15 +1,17 @@
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../../utils/useOnlineStatus";
-import Grocery from './Grocery';
+import Grocery from "./Grocery";
 import UserContext from "../../utils/UserContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useSelector } from "react-redux";
 
 const Header = () => {
-  const isOnline=useOnlineStatus();
-  const userName=useContext(UserContext);
+  const isOnline = useOnlineStatus();
+  const userName = useContext(UserContext);
 
-  const cartItems=useSelector((store)=>store.cart.items);
+  const [loginStatus, setLoginStatus] = useState("Login");
+
+  const cartItems = useSelector((store) => store.cart.items);
   console.log(cartItems);
 
   return (
@@ -22,15 +24,38 @@ const Header = () => {
       </div>
       <div className="nav-items">
         <ul>
-          <li>Online Status:{isOnline?"👍":"👎"} </li>
-          <li><Link to="/">Home</Link></li>
+          <li>Online Status:{isOnline ? "👍" : "👎"} </li>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
           <li>
             <Link to="/about">About Us</Link>
           </li>
-          <li><Link to="/contact">Contact Us</Link></li>
-          <li><Link to="/grocery">Grocery</Link> </li>
-          <li ><Link to="/cart">Cart- {cartItems.length} </Link> </li>
-          <li >{userName.loggedInUser}</li>
+          <li>
+            <Link to="/contact">Contact Us</Link>
+          </li>
+          <li>
+            <Link to="/grocery">Grocery</Link>
+          </li>
+          <li>
+            <Link to="/cart">Cart- {cartItems.length} </Link>
+          </li>
+          <li className="border border-black bg-amber-200 rounded-lg p-1 cursor-pointer">
+            <button
+              onClick={() =>
+                loginStatus == "Login"
+                  ? setLoginStatus("Logout")
+                  : setLoginStatus("Login")
+              }
+            >
+              {loginStatus}
+            </button>
+          </li>
+          <li className="border border-black bg-amber-500 rounded-lg p-1">
+            <button>Change Theme</button>
+          </li>
+
+          <li>{userName.loggedInUser}</li>
         </ul>
       </div>
     </div>

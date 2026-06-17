@@ -58,6 +58,7 @@ const Body = () => {
     <div className="body">
       <div className="filter">
         <input
+          data-testid = "searchInput"
           type="text"
           placeholder="Search restaurants..."
           className="search-box"

@@ -1,0 +1,9 @@
+{
+  "name": "KFC",
+  "costForTwo": "400",
+  "avgRating": "4.3",
+  "sla": {
+    "deliveryTime": "30"
+  },
+  "cloudinaryImageId": "abc123"
+}
