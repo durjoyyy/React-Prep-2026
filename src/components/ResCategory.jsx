@@ -33,6 +33,7 @@ const ResCategory = ({
         <div className="category-items">
           {data.itemCards?.map((item) => (
             <div
+              data-testid="foodItems"
               key={item.card.info.id}
               className="menu-item"
             >

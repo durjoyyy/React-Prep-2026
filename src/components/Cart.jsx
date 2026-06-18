@@ -31,6 +31,7 @@ const Cart = () => {
             <div className="space-y-4">
               {cartItems.map((item, index) => (
                 <div
+                data-testid='cartItem'
                   key={`${item.id}-${index}`}   // ✅ fixes duplicate key issue
                   className="bg-white p-4 rounded-xl shadow flex justify-between items-center"
                 >
